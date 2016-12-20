@@ -23,3 +23,20 @@ Feature: FamilyTreeTest
     | Marie   | Chris   |
 
   Scenario: Add a child to the family tree
+    Given I have <person1> and <person2> in the family tree at level <level>
+    And I add <person3> to the family tree at <childrenLevel> which is ≤gender>
+    And I connect <person3> as child to <person1> and <person2>
+    Then Then <person3> is <child> of <person1> and <person2>
+    | person1 | person2 | person3  | level | childrenLevel | gender | child    |
+    | Chris   | Marie   | Isabella | 1     | 2             | female | daughter |
+    | Chris   | Anna    | Richi    | 1     | 2             | male   | son      |
+
+  Scenario: Two people are siblings
+    Given I have <person1> and <person2> in the family tree at level <level>
+    And I add <person3> to the family tree at <childrenLevel>
+    And I connect <person3> as child to <person1> and <person2>
+    And I add <person4> to the family tree at <childrenLevel>
+    And I connect <person4> as child to <person1> and <person2>
+    Then Then <person3> and <person4> are siblings
+      | person1 | person2 | person3  | person4  | level | childrenLevel |
+      | Chris   | Marie   | Isabella | Michael  | 1     | 2             |
