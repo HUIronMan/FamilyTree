@@ -1,11 +1,13 @@
-/**
+/*
  * Created by kevintrogant on 15.12.16.
  */
+
+import org.apache.regexp.RE;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class FamilyTree {
+class FamilyTree {
 
     /* Singleton stuff */
 
@@ -14,7 +16,7 @@ public class FamilyTree {
     /* There is only going to be one FamilyTree on runtime anyways,
      * so against better judgment, we use a singleton
      */
-    public static FamilyTree getInstance() {
+    static FamilyTree getInstance() {
         if (instance == null) {
             instance = new FamilyTree();
         }
@@ -23,59 +25,116 @@ public class FamilyTree {
 
     private FamilyTree() {
         persons = new HashMap<>();
-        personIdSuffixes = new HashMap<>();
-        nameIDMap = new HashMap<>();
+        relations = new LinkedList<>();
     }
 
     /* End of Singleton stuff */
 
-    private HashMap<Long, Person> persons;
-    private HashMap<Long, Integer> personIdSuffixes;
-
-    private HashMap<String, LinkedList<Long>> nameIDMap;
+    private HashMap<String, Person> persons;
+    private LinkedList<Relation> relations;
 
     boolean doesPersonExist(long id) {
         return persons.containsKey(id);
     }
 
-    int getIdSuffix(long id) {
-        int suffix = 1;
-        if (personIdSuffixes.containsKey(id)) {
-            suffix = personIdSuffixes.get(id) + 1;
-            personIdSuffixes.replace(id, suffix);
-        } else{
-            personIdSuffixes.put(id, suffix);
-        }
-        return suffix;
+    void addPerson(Person p) {
+        persons.put(p.getName(), p);
     }
 
-    void registerPerson(Person p) {
-        persons.put(p.getUniqueID(), p);
-        String fullName = p.getFullName();
-        if (!nameIDMap.containsKey(fullName)) {
-            nameIDMap.put(fullName, new LinkedList<>());
-        }
-        nameIDMap.get(fullName).addLast(p.getUniqueID());
+    Person getPerson(String name) {
+        return persons.get(name);
     }
 
-    void unregisterPerson(long id) {
-        nameIDMap.get(persons.get(id).getFullName()).remove(id);
-        persons.remove(id);
+    /* Query the tree */
+
+    boolean isPersonMarried(String name) {
+        return isPersonMarried(getPerson(name));
     }
 
-    Person getPerson(long id) {
-        return persons.get(id);
-    }
-
-    long[] getPersonsWithName(String fullName) {
-        if (nameIDMap.containsKey(fullName)) {
-            long[] ids = new long[nameIDMap.get(fullName).size()];
-            for (int i = 0; i < nameIDMap.get(fullName).size(); i++) {
-                ids[i] = nameIDMap.get(fullName).get(i);
+    boolean isPersonMarried(Person p) {
+        for (Relation r : relations) {
+            if ((r.getPersonA().equals(p) || r.getPersonB().equals(p)) && r.getType() == RelationType.MARRIED) {
+                return true;
             }
-            return ids;
-        } else {
-            return new long[0];
         }
+        return false;
+    }
+
+    Person getSpouse(Person p) {
+        for (Relation r : relations) {
+            if (r.getPersonA().equals(p) && r.getType() == RelationType.MARRIED) {
+                return r.getPersonB();
+            } else if (r.getPersonB().equals(p) && r.getType() == RelationType.MARRIED) {
+                return r.getPersonA();
+            }
+        }
+        return null;
+    }
+
+    Person getParentOf(Person p) {
+        for (Relation r : relations) {
+            if (r.getPersonA().equals(p) && r.getType() == RelationType.CHILD_OF) {
+                return r.getPersonB();
+            }
+        }
+        return null;
+    }
+
+    LinkedList<Person> getChildrenOf(Person p) {
+        LinkedList<Person> children = new LinkedList<>();
+        for (Relation r : relations) {
+            if (r.getPersonB().equals(p) && r.getType() == RelationType.CHILD_OF) {
+                children.addLast(r.getPersonA());
+            }
+        }
+        return children;
+    }
+
+    boolean isParentOf(Person parent, Person child) {
+        Person p = getParentOf(child);
+        if (p == null)
+            return false;
+        return p.equals(parent);
+    }
+
+    boolean isChildOf(Person child, Person parent) {
+        return isParentOf(parent, child);
+    }
+
+    /* Modify the tree */
+
+    void marryPersons(String nameA, String nameB) throws InvalidRelationshipException {
+        marryPersons(getPerson(nameA), getPerson(nameB));
+    }
+
+    /** \brief Marry two unrelated persons
+     *
+     * Both must not be married.
+     *
+     */
+    void marryPersons(Person pA, Person pB) throws InvalidRelationshipException {
+        if (isPersonMarried(pA)) {
+            throw new InvalidRelationshipException(pA, pB, RelationType.MARRIED, pA.getName() + " is already married");
+        }
+        if (isPersonMarried(pB)) {
+            throw new InvalidRelationshipException(pA, pB, RelationType.MARRIED, pB.getName() + " is already married");
+        }
+
+        relations.addLast(new Relation(pA, pB, RelationType.MARRIED));
+    }
+
+    /** \brief Make a person a child of another person
+     *
+     * This is not allowed to introduce a cycle (ie. child mustn't be the parent of parent)
+     */
+    void makeChildOf(Person child, Person parent) throws InvalidRelationshipException {
+        if (isChildOf(child, parent))
+            return; // nothing to do here
+
+        if (isChildOf(parent, child)) {
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, parent.getName() + " is a child of " + child.getName());
+        }
+
+        relations.addLast(new Relation(child, parent, RelationType.CHILD_OF));
     }
 }

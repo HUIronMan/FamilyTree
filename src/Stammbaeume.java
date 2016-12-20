@@ -1,30 +1,28 @@
-import java.util.LinkedList;
-
-/**
+/*
  * Created by kevintrogant on 15.12.16.
  */
 public class Stammbaeume {
 
     public static void main(String[] args) {
         System.out.println("Stammbäume");
-        for (int i = 0; i < 5000; i++) {
-            Person p = new Person("foo", "bar", String.valueOf(i));
-            FamilyTree.getInstance().registerPerson(p);
-        }
-        long[] ids = FamilyTree.getInstance().getPersonsWithName("foo bar");
 
-        LinkedList<Long> seenIds = new LinkedList<Long>();
+        Person bob = new Person("Bob", Gender.MALE);
+        Person eva = new Person( "Eva", Gender.FEMALE);
+        Person tom = new Person("Tom", Gender.MALE);
 
-        for (long id : ids) {
-            Person p = FamilyTree.getInstance().getPerson(id);
-            System.out.print(p.getFullName());
-            System.out.print(" ");
-            System.out.print(p.getUniqueIDString());
-            System.out.print(" ");
-            System.out.println(p.getBirthday());
+        FamilyTree.getInstance().addPerson(bob);
+        FamilyTree.getInstance().addPerson(eva);
+        FamilyTree.getInstance().addPerson(tom);
 
-            assert ! seenIds.contains(p.getUniqueID());
-            seenIds.addLast(p.getUniqueID());
+        try {
+            FamilyTree.getInstance().marryPersons("Bob", "Eva");
+            FamilyTree.getInstance().makeChildOf(tom, bob);
+
+            System.out.println(FamilyTree.getInstance().isParentOf(bob, tom));
+            System.out.println(FamilyTree.getInstance().getSpouse(bob).getName());
+
+        } catch (InvalidRelationshipException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 }
