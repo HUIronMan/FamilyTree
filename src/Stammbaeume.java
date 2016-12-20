@@ -6,20 +6,17 @@ public class Stammbaeume {
     public static void main(String[] args) {
         System.out.println("Stammbäume");
 
-        Person bob = new Person("Bob", Gender.MALE);
-        Person eva = new Person( "Eva", Gender.FEMALE);
-        Person tom = new Person("Tom", Gender.MALE);
 
-        FamilyTree.getInstance().addPerson(bob);
-        FamilyTree.getInstance().addPerson(eva);
-        FamilyTree.getInstance().addPerson(tom);
+        FamilyTree.getInstance().addPerson(new Person("Bob", Gender.MALE));
+        FamilyTree.getInstance().addPerson(new Person("Eva", Gender.FEMALE));
+        FamilyTree.getInstance().addPerson(new Person("Tom", Gender.MALE));
 
         try {
             FamilyTree.getInstance().marryPersons("Bob", "Eva");
-            FamilyTree.getInstance().makeChildOf(tom, bob);
+            FamilyTree.getInstance().makeChildOf("Tom", "Bob");
 
-            System.out.println(FamilyTree.getInstance().isParentOf(bob, tom));
-            System.out.println(FamilyTree.getInstance().getSpouse(bob).getName());
+            System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
+            System.out.println(FamilyTree.getInstance().getSpouse("Bob").getName());
 
         } catch (InvalidRelationshipException ex) {
             System.out.println(ex.getMessage());

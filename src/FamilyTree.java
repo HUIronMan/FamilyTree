@@ -33,8 +33,10 @@ class FamilyTree {
     private HashMap<String, Person> persons;
     private LinkedList<Relation> relations;
 
-    boolean doesPersonExist(long id) {
-        return persons.containsKey(id);
+    /** \brief Reset the tree */
+    void reset() {
+        persons.clear();
+        relations.clear();
     }
 
     void addPerson(Person p) {
@@ -60,6 +62,11 @@ class FamilyTree {
         return false;
     }
 
+    Person getSpouse(String nameOfP) {
+        Person p = getPerson(nameOfP);
+        return getSpouse(p);
+    }
+
     Person getSpouse(Person p) {
         for (Relation r : relations) {
             if (r.getPersonA().equals(p) && r.getType() == RelationType.MARRIED) {
@@ -71,6 +78,11 @@ class FamilyTree {
         return null;
     }
 
+    Person getParentOf(String name) {
+        Person p = getPerson(name);
+        return getParentOf(p);
+    }
+
     Person getParentOf(Person p) {
         for (Relation r : relations) {
             if (r.getPersonA().equals(p) && r.getType() == RelationType.CHILD_OF) {
@@ -78,6 +90,11 @@ class FamilyTree {
             }
         }
         return null;
+    }
+
+    LinkedList<Person> getChildrenOf(String name) {
+        Person p = getPerson(name);
+        return getChildrenOf(p);
     }
 
     LinkedList<Person> getChildrenOf(Person p) {
@@ -90,11 +107,23 @@ class FamilyTree {
         return children;
     }
 
+    boolean isParentOf(String nameParent, String nameChild) {
+        Person parent = getPerson(nameParent);
+        Person child = getPerson(nameChild);
+        return isParentOf(parent, child);
+    }
+
     boolean isParentOf(Person parent, Person child) {
         Person p = getParentOf(child);
         if (p == null)
             return false;
         return p.equals(parent);
+    }
+
+    boolean isChildOf(String nameChild, String nameParent) {
+        Person child = getPerson(nameChild);
+        Person parent = getPerson(nameParent);
+        return isChildOf(child, parent);
     }
 
     boolean isChildOf(Person child, Person parent) {
@@ -121,6 +150,12 @@ class FamilyTree {
         }
 
         relations.addLast(new Relation(pA, pB, RelationType.MARRIED));
+    }
+
+    void makeChildOf(String nameChild, String nameParent) throws InvalidRelationshipException {
+        Person child = getPerson(nameChild);
+        Person parent = getPerson(nameParent);
+        makeChildOf(child, parent);
     }
 
     /** \brief Make a person a child of another person
