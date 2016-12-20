@@ -29,6 +29,11 @@ class Person {
    boolean equals(Person other) {
       return name.equals(other.getName());
    }
+
+   @Override
+   public String toString() {
+      return this.name + " " + gender.toString();
+   }
 }
 
 enum Gender {

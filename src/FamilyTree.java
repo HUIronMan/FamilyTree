@@ -2,10 +2,11 @@
  * Created by kevintrogant on 15.12.16.
  */
 
-import org.apache.regexp.RE;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 
 class FamilyTree {
 
@@ -39,12 +40,26 @@ class FamilyTree {
         relations.clear();
     }
 
-    void addPerson(Person p) {
-        persons.put(p.getName(), p);
+    void print() {
+        // find a starting point
+        for (Person p : persons.values()) {
+            if (getParentsOf(p).size() == 0) {
+                printPerson(p, 0);
+            }
+        }
     }
 
-    Person getPerson(String name) {
-        return persons.get(name);
+    private void printPerson(Person p, int d) {
+        for (int i = 0; i < d; i++)
+            System.out.print(" ");
+        System.out.print(p);
+        if (getSpouse(p) != null) {
+            System.out.print(" married with " + getSpouse(p).toString());
+        }
+        System.out.print("\n");
+        for (Person child : getChildrenOf(p)) {
+            printPerson(child, d+2);
+        }
     }
 
     /* Query the tree */
@@ -78,30 +93,31 @@ class FamilyTree {
         return null;
     }
 
-    Person getParentOf(String name) {
+    Set<Person> getParentsOf(String name) {
         Person p = getPerson(name);
-        return getParentOf(p);
+        return getParentsOf(p);
     }
 
-    Person getParentOf(Person p) {
+    Set<Person> getParentsOf(Person p) {
+        HashSet<Person> parents = new HashSet<>();
         for (Relation r : relations) {
             if (r.getPersonA().equals(p) && r.getType() == RelationType.CHILD_OF) {
-                return r.getPersonB();
+                parents.add(r.getPersonB());
             }
         }
-        return null;
+        return parents;
     }
 
-    LinkedList<Person> getChildrenOf(String name) {
+    Set<Person> getChildrenOf(String name) {
         Person p = getPerson(name);
         return getChildrenOf(p);
     }
 
-    LinkedList<Person> getChildrenOf(Person p) {
-        LinkedList<Person> children = new LinkedList<>();
+    Set<Person> getChildrenOf(Person p) {
+        HashSet<Person> children = new HashSet<>();
         for (Relation r : relations) {
             if (r.getPersonB().equals(p) && r.getType() == RelationType.CHILD_OF) {
-                children.addLast(r.getPersonA());
+                children.add(r.getPersonA());
             }
         }
         return children;
@@ -114,10 +130,8 @@ class FamilyTree {
     }
 
     boolean isParentOf(Person parent, Person child) {
-        Person p = getParentOf(child);
-        if (p == null)
-            return false;
-        return p.equals(parent);
+        Set<Person> p = getParentsOf(child);
+        return p.contains(parent);
     }
 
     boolean isChildOf(String nameChild, String nameParent) {
@@ -130,7 +144,115 @@ class FamilyTree {
         return isParentOf(parent, child);
     }
 
+    /* More complex queries */
+
+    Set<Person> getSiblingsOf(String name) {
+        Person p = getPerson(name);
+        return getSiblingsOf(p);
+    }
+
+    Set<Person> getSiblingsOf(Person person) {
+        HashSet<Person> siblings = new HashSet<>();
+
+        // Get the children of my parents, remove myself -> list of siblings
+
+        Set<Person> parents = getParentsOf(person);
+        for (Person parent : parents) {
+            Set<Person> s = getChildrenOf(parent);
+            s.remove(person);
+            siblings.addAll(s);
+        }
+
+        return siblings;
+    }
+
+    Set<Person> getGrandparentsOf(String name) {
+        Person p = getPerson(name);
+        return getGrandparentsOf(p);
+    }
+
+    Set<Person> getGrandparentsOf(Person person) {
+        Set<Person> parents = getParentsOf(person);
+        HashSet<Person> grandparents = new HashSet<>();
+        for (Person parent : parents) {
+            grandparents.addAll(getParentsOf(parent));
+        }
+        return grandparents;
+    }
+
+    Set<Person> getGrandchildrenOf(String name) {
+        Person p = getPerson(name);
+        return getGrandchildrenOf(p);
+    }
+
+    Set<Person> getGrandchildrenOf(Person person) {
+        Set<Person> children = getChildrenOf(person);
+        HashSet<Person> grandchildren = new HashSet<>();
+        for (Person child : children) {
+            grandchildren.addAll(getChildrenOf(child));
+        }
+        return grandchildren;
+    }
+
+    Set<Person> getCousinsOf(String name) {
+        Person p = getPerson(name);
+        return getCousinsOf(p);
+    }
+
+    Set<Person> getCousinsOf(Person person) {
+        // My parents siblings children are my cousins
+        HashSet<Person> cousins = new HashSet<>();
+        for (Person parent : getParentsOf(person)) {
+            for (Person sib : getSiblingsOf(parent)) {
+                cousins.addAll(getChildrenOf(sib));
+            }
+        }
+        return cousins;
+    }
+
+    Set<Person> getFathersSiblings(String name) {
+        Person p = getPerson(name);
+        return getFathersSiblings(p);
+    }
+
+    Set<Person> getFathersSiblings(Person person) {
+        Set<Person> parents = getParentsOf(person);
+        HashSet<Person> siblings = new HashSet<>();
+
+        parents.forEach(parent -> {
+            if (parent.getGender() == Gender.MALE) {
+                siblings.addAll(getSiblingsOf(parent));
+            }
+        });
+        return siblings;
+    }
+
+    Set<Person> getMothersSiblings(String name) {
+        Person p = getPerson(name);
+        return getMothersSiblings(p);
+    }
+
+    Set<Person> getMothersSiblings(Person person) {
+        Set<Person> parents = getParentsOf(person);
+        HashSet<Person> siblings = new HashSet<>();
+
+        parents.forEach(parent -> {
+            if (parent.getGender() == Gender.FEMALE) {
+                siblings.addAll(getSiblingsOf(parent));
+            }
+        });
+        return siblings;
+    }
+
     /* Modify the tree */
+
+    void addPerson(Person p) {
+        persons.put(p.getName(), p);
+    }
+
+    Person getPerson(String name) {
+        return persons.get(name);
+    }
 
     void marryPersons(String nameA, String nameB) throws InvalidRelationshipException {
         marryPersons(getPerson(nameA), getPerson(nameB));
@@ -161,6 +283,7 @@ class FamilyTree {
     /** \brief Make a person a child of another person
      *
      * This is not allowed to introduce a cycle (ie. child mustn't be the parent of parent)
+     * And any person can only have up to two parents
      */
     void makeChildOf(Person child, Person parent) throws InvalidRelationshipException {
         if (isChildOf(child, parent))
@@ -168,6 +291,10 @@ class FamilyTree {
 
         if (isChildOf(parent, child)) {
             throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, parent.getName() + " is a child of " + child.getName());
+        }
+
+        if (getParentsOf(child).size() == 2) {
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, child.getName() + " already has two parents");
         }
 
         relations.addLast(new Relation(child, parent, RelationType.CHILD_OF));
