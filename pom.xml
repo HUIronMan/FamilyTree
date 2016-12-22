@@ -36,19 +36,19 @@
                 </configuration>
             </plugin>
         </plugins>
-        <sourceDirectory>${project.basedir}/src</sourceDirectory>
-        <scriptSourceDirectory>${project.basedir}/src/</scriptSourceDirectory>
-        <testSourceDirectory>${project.basedir}/test/java</testSourceDirectory>
-        <outputDirectory>${project.basedir}/target/classes</outputDirectory>
-        <testOutputDirectory>${project.basedir}/target/test-classes</testOutputDirectory>
+        <sourceDirectory>${project.basedir}/src/main/</sourceDirectory>
+        <scriptSourceDirectory>${project.basedir}/src/main/</scriptSourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+        <outputDirectory>${project.basedir}/src/target/classes</outputDirectory>
+        <testOutputDirectory>${project.basedir}/src/target/test-classes</testOutputDirectory>
         <resources>
             <resource>
-                <directory>${project.basedir}/src</directory>
+                <directory>${project.basedir}/src/main</directory>
             </resource>
         </resources>
         <testResources>
             <testResource>
-                <directory>${project.basedir}/test/resources</directory>
+                <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
     </build>
