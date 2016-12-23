@@ -1,4 +1,4 @@
-import sun.awt.KeyboardFocusManagerPeerImpl;
+package java;
 
 /*
  * Created by kevintrogant on 15.12.16.

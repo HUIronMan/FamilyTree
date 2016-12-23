@@ -1,7 +1,7 @@
 /*
  * Created by kevintrogant on 15.12.16.
  */
-
+package java;
 
 import java.util.HashMap;
 import java.util.LinkedList;
