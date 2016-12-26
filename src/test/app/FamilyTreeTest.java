@@ -5,6 +5,8 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
 
 public class FamilyTreeTest {
 
@@ -29,8 +31,7 @@ public class FamilyTreeTest {
 
     @Given("^I let ([^\"]*) and ([^\"]*) getting married$")
     public void i_let_romeo_and_juliette_getting_married(String person1, String person2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        FamilyTree.getInstance().marryPersons(person1, person2);
     }
 
     @Given("^I have a root ([^\"]*) at level (\\d+)$")
@@ -46,14 +47,25 @@ public class FamilyTreeTest {
 //        throw new PendingException();
     }
 
+    @Then("^([^\"]*) is married to ([^\"]*)$")
+    public void a_person_is_married_to_person(String person1, String person2) throws Throwable {
+        Person person = FamilyTree.getInstance().getSpouse(person2);
+        Assert.assertTrue(person.getName() == person1);
+//        throw new PendingException();
+    }
+
     @Then("^([^\"]*) is ([^\"]*) of ([^\"]*)$")
     public void a_person_has_a_relationship_to_another_person(String person1, String relation, String person2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        // For automatic transformation, change DataTable to one of
-        // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
-        // E,K,V must be a scalar (String, Integer, Date, enum etc)
-        Assert.assertEquals(
-                relation, relation);
-        throw new PendingException();
+        Person person = FamilyTree.getInstance().getSpouse(person2);
+        Assert.assertTrue(person.getName() == person1);
+//        throw new PendingException();
+    }
+    @Before
+    public void beforeScenario() {
+        FamilyTree.getInstance().reset();
+    }
+    @After
+    public void afterScenario() {
+        FamilyTree.getInstance().reset();
     }
 }

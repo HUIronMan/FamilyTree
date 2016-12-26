@@ -8,13 +8,14 @@ Feature: FamilyTreeTest
       | Chris | 1     | male   |
 
   Scenario Outline: Two people are getting married
-    Given I add a person named <person1> to the family tree at level <level> who is <female>
-    And I add a person named <person2> to the family tree at level <level> who is <male>
+    Given I add a person named <person1> to the family tree at level <level> who is <gender1>
+    And I add a person named <person2> to the family tree at level <level> who is <gender2>
     And I let <person1> and <person2> getting married
-    Then <person1> is <partner> of <person2>
+    Then <person1> is married to <person2>
     Examples:
-      | person1 | person2 | level | female | male | partner |
-      | Marie   | Chris   | 1     | female | male | wife    |
+      | person1   | person2 | level | gender1 | gender2 | partner |
+      | Marie     | Chris   | 1     | female  | male    | wife    |
+      | Christian | Anna    | 1     | male    | female  | husband |
 
   Scenario Outline: Add parent to root node or to an unmarried person
     Given I add a person named <person1> to the family tree at level 1 who is <female>
