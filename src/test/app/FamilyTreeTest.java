@@ -1,11 +1,12 @@
-package java;
+package app;
 //import cucumber.api.DataTable;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import java.FamilyTree;
-import java.Person;
+import app.Gender;
+import app.FamilyTree;
+import app.Person;
 
 //import cucumber.api.junit.Cucumber;
 //import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ public class FamilyTreeTest {
     }
 
     @Given("^I let ([^\"]*) and ([^\"]*) getting married$")
-    public void i_let_julia_and_romeo_getting_married(String person1, String person2) throws Throwable {
+    public void i_let_romeo_and_juliette_getting_married(String person1, String person2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }

@@ -1,9 +1,9 @@
-package java;
+package app;
 
 /**
  * Created by kevintrogant on 15.12.16.
  */
-class Person {
+public class Person {
 
    private String name;
    private Gender gender;
@@ -15,7 +15,7 @@ class Person {
     *
     * @param name Name of the person
     */
-   Person(String name, Gender gender) {
+   public Person(String name, Gender gender) {
       this.name = name;
       this.gender = gender;
    }
@@ -38,7 +38,7 @@ class Person {
    }
 }
 
-enum Gender {
-   MALE,
-   FEMALE
-}
+//public enum Gender {
+//   MALE,
+//   FEMALE
+//}
