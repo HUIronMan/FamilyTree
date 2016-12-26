@@ -1,12 +1,11 @@
 Feature: FamilyTreeTest
   Scenario Outline: Add a person to the family tree
-    Given I have <startAmount> people in my family tree
-    And I add a person named <name> to the family tree at level <level> who is <gender>
-    Then I have <endAmount> people in my family tree
+    Given I add a person named <name> to the family tree at level <level> who is <gender>
+    Then <name> is in my family tree
     Examples:
-      | startAmount | endAmount | name  | level | gender |
-      | 0           | 1         | Marie | 1     | female |
-      | 1           | 2         | Chris | 1     | male   |
+      | name  | level | gender |
+      | Marie | 1     | female |
+      | Chris | 1     | male   |
 
   Scenario Outline: Two people are getting married
     Given I add a person named <person1> to the family tree at level <level> who is <female>

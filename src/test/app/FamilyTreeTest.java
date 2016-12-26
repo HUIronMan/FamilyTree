@@ -1,24 +1,18 @@
 package app;
-//import cucumber.api.DataTable;
 
+//import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import app.Gender;
-import app.FamilyTree;
-import app.Person;
-
-//import cucumber.api.junit.Cucumber;
-//import org.junit.runner.RunWith;
-//import cucumber.api.java8.En;
+import org.junit.Assert;
 
 public class FamilyTreeTest {
 
-    @Given("^I have (\\d+) people in my family tree$")
-    public void i_have_a_number_of_people_in_my_family_tree(int amount) throws Throwable {
-
-        throw new PendingException();
-    }
+//    @Given("^I have (\\d+) people in my family tree$")
+//    public void i_have_a_number_of_people_in_my_family_tree(int amount) throws Throwable {
+//        int people = FamilyTree.getInstance().persons.size();
+//        throw new PendingException();
+//    }
 
     @Given("^I add a person named ([^\"]*) to the family tree at level (\\d+) who is ([^\"]*)$")
     public void i_add_a_person_to_my_family_tree(String name, int level, String gender) throws Throwable {
@@ -45,12 +39,21 @@ public class FamilyTreeTest {
         throw new PendingException();
     }
 
+    @Then("^([^\"]*) is in my family tree$")
+    public void a_person_is_in_my_family_tree(String name) throws Throwable {
+        Person person = FamilyTree.getInstance().getPerson(name);
+        Assert.assertTrue(person.getName() == name);
+//        throw new PendingException();
+    }
+
     @Then("^([^\"]*) is ([^\"]*) of ([^\"]*)$")
     public void a_person_has_a_relationship_to_another_person(String person1, String relation, String person2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         // For automatic transformation, change DataTable to one of
         // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
         // E,K,V must be a scalar (String, Integer, Date, enum etc)
+        Assert.assertEquals(
+                relation, relation);
         throw new PendingException();
     }
 }
