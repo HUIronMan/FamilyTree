@@ -1,14 +1,14 @@
 /*
  * Created by kevintrogant on 15.12.16.
  */
-
+package app;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
 
-class FamilyTree {
+public class FamilyTree {
 
     /* Singleton stuff */
 
@@ -17,7 +17,7 @@ class FamilyTree {
     /* There is only going to be one FamilyTree on runtime anyways,
      * so against better judgment, we use a singleton
      */
-    static FamilyTree getInstance() {
+    public static FamilyTree getInstance() {
         if (instance == null) {
             instance = new FamilyTree();
         }
@@ -246,7 +246,7 @@ class FamilyTree {
 
     /* Modify the tree */
 
-    void addPerson(Person p) {
+    public void addPerson(Person p) {
         persons.put(p.getName(), p);
     }
 

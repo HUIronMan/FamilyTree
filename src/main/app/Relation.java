@@ -1,4 +1,4 @@
-/*
+package app;/*
  * Created by kevintrogant on 20.12.16.
  */
 
@@ -38,7 +38,3 @@ public class Relation {
     }
 }
 
-enum RelationType {
-    MARRIED,
-    CHILD_OF, // A is child of B
-}
