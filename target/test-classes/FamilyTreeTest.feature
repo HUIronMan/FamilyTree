@@ -13,13 +13,13 @@ Feature: FamilyTreeTest
     And I let <person1> and <person2> getting married
     Then <person1> is married to <person2>
     Examples:
-      | person1   | person2 | level | gender1 | gender2 | partner |
-      | Marie     | Chris   | 1     | female  | male    | wife    |
-      | Christian | Anna    | 1     | male    | female  | husband |
+      | person1   | person2 | level | gender1 | gender2 |
+      | Marie     | Chris   | 1     | female  | male    |
+      | Chris     | Marie    | 1     | male    | female  |
 
   Scenario Outline: Add parent to root node or to an unmarried person
     Given I add a person named <person1> to the family tree at level 1 who is <female>
-    And I add a person named <person1> to the family tree at level 0 who is <male>
+    And I add a person named <person2> to the family tree at level 0 who is <male>
     And I connect <person1> as a child to <person2>
     Then <person1> is child of <person2>
     Examples:
@@ -59,9 +59,9 @@ Feature: FamilyTreeTest
     And I connect <person2> as a child to <person1>
     And I add a person named <person3> to the family tree at level <childrenLevel> who is <male>
     And I connect <person3> as a child to <person1>
-    And I add a person named <person5> to the family tree at level <grandChildLevel> who is <male>
+    And I add a person named <person4> to the family tree at level <grandChildLevel> who is <male>
     And I connect <person4> as a child to <person2>
-    And I add a person named <person6> to the family tree at level <grandChildLevel> who is <female>
+    And I add a person named <person5> to the family tree at level <grandChildLevel> who is <female>
     And I connect <person5> as a child to <person3>
     Then <person4> is cousin of <person5>
     Examples:
