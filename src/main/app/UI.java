@@ -191,8 +191,67 @@ public class UI {
         return true;
     }
 
-    // IS name ... OF name
+    // IS name1 ... OF name2
     private boolean parseIsCommand(String command, int start) {
-        return false;
+        if (start >= command.length()) {
+            System.out.println("IS: Missing parameters: name1, Relation and name2");
+            return false;
+        }
+        String[] params = command.substring(start).split(" ");
+        if (params.length < 4) {
+            System.out.println("IS: Missing parameters: name1, Relation and name");
+            return false;
+        }
+        if (!params[2].toUpperCase().equals("OF")) {
+            System.out.println("Syntax error: Expected OF");
+            return false;
+        }
+        boolean result = false;
+        switch (params[1].toUpperCase()) {
+            case "SPOUSE":
+                result = FamilyTree.getInstance().isSpouseOf(params[0], params[3]);
+                break;
+            case "PARENT": {
+                result = FamilyTree.getInstance().isParentOf(params[0], params[3]);
+                break;
+            }
+            case "CHILD": {
+                result = FamilyTree.getInstance().isChildOf(params[0], params[3]);
+                break;
+            }
+            case "SIBLING": {
+                result = FamilyTree.getInstance().isSiblingOf(params[0], params[3]);
+                break;
+            }
+            case "GRANDPARENT": {
+                result = FamilyTree.getInstance().isGrandparentOf(params[0], params[3]);
+                break;
+            }
+            case "GRANDCHILD": {
+                result = FamilyTree.getInstance().isGrandchildOf(params[0], params[3]);
+                break;
+            }
+            case "COUSIN": {
+                result = FamilyTree.getInstance().isCousinOf(params[0], params[3]);
+                break;
+            }
+            case "FATHERS_SIBLING": {
+                result = FamilyTree.getInstance().isFathersSibling(params[0], params[3]);
+                break;
+            }
+            case "MOTHERS_SIBLING": {
+                result = FamilyTree.getInstance().isMothersSibling(params[0], params[3]);
+                break;
+            }
+            default:
+                System.out.println("IS: Unknown relation \"" + params[1] + "\"");
+                return false;
+        }
+        if (result) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
+        return true;
     }
 }

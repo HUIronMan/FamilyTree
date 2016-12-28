@@ -32,6 +32,7 @@ public class Stammbaeume {
         ui.parseCommand("GET Spouse OF Bob");
 
         //System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
+        ui.parseCommand("IS Bob Parent OF Tom");
 
         //System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
         ui.parseCommand("GET Children OF Eva");
