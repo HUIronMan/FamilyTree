@@ -93,6 +93,16 @@ public class FamilyTree {
         return null;
     }
 
+    boolean isSpouseOf(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isSpouseOf(pA, pB);
+    }
+
+    boolean isSpouseOf(Person personA, Person personB) {
+        return getSpouse(personA).equals(personB);
+    }
+
     Set<Person> getParentsOf(String name) {
         Person p = getPerson(name);
         return getParentsOf(p);

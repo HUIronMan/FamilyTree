@@ -28,18 +28,25 @@ public class Stammbaeume {
         ui.parseCommand("MARRY Bob WITH Eva");
 
         System.out.println("Structured tree:");
-        FamilyTree.getInstance().print();
+        ui.parseCommand("PRINT TREE");
+        ui.parseCommand("GET Spouse OF Bob");
 
-        System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
-        System.out.println(FamilyTree.getInstance().getSpouse("Bob").getName());
+        //System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
 
-        System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
-        System.out.println(FamilyTree.getInstance().getGrandchildrenOf("Bob"));
-        System.out.println(FamilyTree.getInstance().getGrandparentsOf("Timon"));
+        //System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
+        ui.parseCommand("GET Children OF Eva");
 
-        System.out.println(FamilyTree.getInstance().getCousinsOf("Tina"));
+        // System.out.println(FamilyTree.getInstance().getGrandchildrenOf("Bob"));
+        ui.parseCommand("GET Grandchildren OF Bob");
 
-        System.out.println(FamilyTree.getInstance().getFathersSiblings("Tina"));
+        //System.out.println(FamilyTree.getInstance().getGrandparentsOf("Timon"));
+        ui.parseCommand("GET Grandparents OF Timon");
+
+        //System.out.println(FamilyTree.getInstance().getCousinsOf("Tina"));
+        ui.parseCommand("GET Cousins OF Tina");
+
+        //System.out.println(FamilyTree.getInstance().getFathersSiblings("Tina"));
+        ui.parseCommand("GET Fathers_Siblings OF Tina");
 
     }
 }

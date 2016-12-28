@@ -11,6 +11,9 @@ public class UI {
      * MAKE name CHILD OF name
      * MARRY name WITH name
      * PRINT TREE
+     * RESET
+     * GET ... OF name
+     * IS name ... OF name
      *
      * @param command The command
      */
@@ -18,26 +21,30 @@ public class UI {
         String com = "";
         boolean done = false;
 
-        for (int i = 0; i < command.length() - 1; i++) {
+        for (int i = 0; i < command.length(); i++) {
             com += command.charAt(i);
-            if (command.charAt(i + 1) != ' ') {
-                continue;
-            }
-            if (com.toUpperCase().equals("INSERT PERSON")) {
-                i++;
+            if (com.toUpperCase().equals("INSERT PERSON ")) {
                 done = parseInsertPerson(command, i + 1);
                 break;
-            } else if (com.toUpperCase().equals("MAKE")) {
-                i++;
+            } else if (com.toUpperCase().equals("MAKE ")) {
                 done = parseMakeChildOf(command, i + 1);
                 break;
-            } else if (com.toUpperCase().equals("MARRY")) {
-                i++;
+            } else if (com.toUpperCase().equals("MARRY ")) {
                 done = parseMarryWith(command, i + 1);
                 break;
             } else if (com.toUpperCase().equals("PRINT TREE")) {
                 done = true;
                 FamilyTree.getInstance().print();
+                break;
+            } else if (com.toUpperCase().equals("GET ")) {
+                done = parseGetCommand(command, i + 1);
+                break;
+            } else if (com.toUpperCase().equals("IS ")) {
+                done = parseIsCommand(command, i + 1);
+                break;
+            } else if (com.toUpperCase().equals("RESET")) {
+                FamilyTree.getInstance().reset();
+                done = true;
                 break;
             }
         }
@@ -122,5 +129,70 @@ public class UI {
             return false;
         }
         return true;
+    }
+
+    // GET ... OF name
+    private boolean parseGetCommand(String command, int start) {
+        if (start >= command.length()) {
+            System.out.println("GET: Missing parameters: Relation and name");
+            return false;
+        }
+        String[] params = command.substring(start).split(" ");
+        if (params.length < 3) {
+            System.out.println("GET: Missing parameters: Relation and name");
+            return false;
+        }
+        if (!params[1].toUpperCase().equals("OF")) {
+            System.out.println("Syntax error: Expected OF");
+            return false;
+        }
+        switch (params[0].toUpperCase()) {
+            case "SPOUSE": {
+                Person spouse = FamilyTree.getInstance().getSpouse(params[2]);
+                System.out.println(spouse);
+                break;
+            }
+            case "PARENTS": {
+                System.out.println(FamilyTree.getInstance().getParentsOf(params[2]));
+                break;
+            }
+            case "CHILDREN": {
+                System.out.println(FamilyTree.getInstance().getChildrenOf(params[2]));
+                break;
+            }
+            case "SIBLINGS": {
+                System.out.println(FamilyTree.getInstance().getSiblingsOf(params[2]));
+                break;
+            }
+            case "GRANDPARENTS": {
+                System.out.println(FamilyTree.getInstance().getGrandparentsOf(params[2]));
+                break;
+            }
+            case "GRANDCHILDREN": {
+                System.out.println(FamilyTree.getInstance().getGrandchildrenOf(params[2]));
+                break;
+            }
+            case "COUSINS": {
+                System.out.println(FamilyTree.getInstance().getCousinsOf(params[2]));
+                break;
+            }
+            case "FATHERS_SIBLINGS": {
+                System.out.println(FamilyTree.getInstance().getFathersSiblings(params[2]));
+                break;
+            }
+            case "MOTHERS_SIBLINGS": {
+                System.out.println(FamilyTree.getInstance().getMothersSiblings(params[2]));
+                break;
+            }
+            default:
+                System.out.println("GET: Unknown relation \"" + params[0] + "\"");
+                return false;
+        }
+        return true;
+    }
+
+    // IS name ... OF name
+    private boolean parseIsCommand(String command, int start) {
+        return false;
     }
 }
