@@ -206,7 +206,7 @@ public class UI {
             System.out.println("Syntax error: Expected OF");
             return false;
         }
-        boolean result = false;
+        boolean result;
         switch (params[1].toUpperCase()) {
             case "SPOUSE":
                 result = FamilyTree.getInstance().isSpouseOf(params[0], params[3]);
