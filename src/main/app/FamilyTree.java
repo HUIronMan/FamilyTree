@@ -166,6 +166,21 @@ public class FamilyTree {
         return siblings;
     }
 
+    // is A a sibling of B ?
+    boolean isSiblingOf(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isSiblingOf(pA, pB);
+    }
+
+    boolean isSiblingOf(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
+        Set<Person> siblings = getSiblingsOf(personB);
+        return siblings.contains(personA);
+    }
+
     Set<Person> getGrandparentsOf(String name) {
         Person p = getPerson(name);
         return getGrandparentsOf(p);
@@ -178,6 +193,21 @@ public class FamilyTree {
             grandparents.addAll(getParentsOf(parent));
         }
         return grandparents;
+    }
+
+    // is A a grandparent of B?
+    boolean isGrandparentOf(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isGrandparentOf(pA, pB);
+    }
+
+    boolean isGrandparentOf(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
+        Set<Person> grandparents = getGrandparentsOf(personB);
+        return grandparents.contains(personA);
     }
 
     Set<Person> getGrandchildrenOf(String name) {
@@ -194,6 +224,15 @@ public class FamilyTree {
         return grandchildren;
     }
 
+    // is A a grandchild of B?
+    boolean isGrandchildOf(String nameA, String nameB) {
+        return isGrandparentOf(nameB, nameA);
+    }
+
+    boolean isGrandchildOf(Person personA, Person personB) {
+        return isGrandparentOf(personB, personA);
+    }
+
     Set<Person> getCousinsOf(String name) {
         Person p = getPerson(name);
         return getCousinsOf(p);
@@ -208,6 +247,21 @@ public class FamilyTree {
             }
         }
         return cousins;
+    }
+
+    // is A a cousing of B?
+    boolean isCousinOf(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isChildOf(pA, pB);
+    }
+
+    boolean isCousinOf(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
+        Set<Person> cousins = getCousinsOf(personB);
+        return cousins.contains(personA);
     }
 
     Set<Person> getFathersSiblings(String name) {
@@ -227,6 +281,21 @@ public class FamilyTree {
         return siblings;
     }
 
+    // Is A a sibling of the father of B?
+    boolean isFathersSibling(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isFathersSibling(pA, pB);
+    }
+
+    boolean isFathersSibling(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
+        Set<Person> fathersSiblings = getFathersSiblings(personB);
+        return fathersSiblings.contains(personA);
+    }
+
     Set<Person> getMothersSiblings(String name) {
         Person p = getPerson(name);
         return getMothersSiblings(p);
@@ -244,6 +313,21 @@ public class FamilyTree {
         return siblings;
     }
 
+    // Is A a sibling of the mother of B?
+    boolean isMothersSibling(String nameA, String nameB) {
+        Person pA = getPerson(nameA);
+        Person pB = getPerson(nameB);
+        return isMothersSibling(pA, pB);
+    }
+
+    boolean isMothersSibling(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
+        Set<Person> mothersSiblings = getMothersSiblings(personB);
+        return mothersSiblings.contains(personA);
+    }
+
     /* Modify the tree */
 
     public void addPerson(Person p) {
@@ -251,6 +335,9 @@ public class FamilyTree {
     }
 
     Person getPerson(String name) {
+        if (!persons.containsKey(name)) {
+            System.out.println("Person \"" + name + "\" does not exist!");
+        }
         return persons.get(name);
     }
 

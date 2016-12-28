@@ -9,39 +9,37 @@ public class Stammbaeume {
         System.out.println("Stammbäume");
 
 
-        FamilyTree.getInstance().addPerson(new Person("Bob", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Eva", Gender.FEMALE));
-        FamilyTree.getInstance().addPerson(new Person("Tom", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Tim", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Timon", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Pumba", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Tina", Gender.FEMALE));
+        UI ui = new UI();
+        /* Case does not matter for commands (Only for names)
+         */
+        ui.parseCommand("INSERT PERSON Bob MALE");
+        ui.parseCommand("INSERT PERSON Eva FEMALE");
+        ui.parseCommand("INSERT PERSON Tom MALE");
+        ui.parseCommand("INSERT PERSON Tim MALE");
+        ui.parseCommand("INSERT PERSON Timon MALE");
+        ui.parseCommand("INSERT PERSON Pumba MALE");
+        ui.parseCommand("INSERT PERSON Tina FEMALE");
+        ui.parseCommand("MAKE Tom CHILD OF Bob");
+        ui.parseCommand("MAKE Tom CHILD OF Eva");
+        ui.parseCommand("MAKE Tim CHILD OF Bob");
+        ui.parseCommand("MAKE Timon CHILD OF Tom");
+        ui.parseCommand("MAKE Pumba CHILD OF Tom");
+        ui.parseCommand("MAKE Tina CHILD OF Tim");
+        ui.parseCommand("MARRY Bob WITH Eva");
 
-        try {
-            FamilyTree.getInstance().marryPersons("Bob", "Eva");
-            FamilyTree.getInstance().makeChildOf("Tom", "Bob");
-            FamilyTree.getInstance().makeChildOf("Tom", "Eva");
-            FamilyTree.getInstance().makeChildOf("Tim", "Bob");
-            FamilyTree.getInstance().makeChildOf("Timon", "Tom");
-            FamilyTree.getInstance().makeChildOf("Pumba", "Tom");
-            FamilyTree.getInstance().makeChildOf("Tina", "Tim");
+        System.out.println("Structured tree:");
+        FamilyTree.getInstance().print();
 
-            System.out.println("Structured tree:");
-            FamilyTree.getInstance().print();
+        System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
+        System.out.println(FamilyTree.getInstance().getSpouse("Bob").getName());
 
-            System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
-            System.out.println(FamilyTree.getInstance().getSpouse("Bob").getName());
+        System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
+        System.out.println(FamilyTree.getInstance().getGrandchildrenOf("Bob"));
+        System.out.println(FamilyTree.getInstance().getGrandparentsOf("Timon"));
 
-            System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
-            System.out.println(FamilyTree.getInstance().getGrandchildrenOf("Bob"));
-            System.out.println(FamilyTree.getInstance().getGrandparentsOf("Timon"));
+        System.out.println(FamilyTree.getInstance().getCousinsOf("Tina"));
 
-            System.out.println(FamilyTree.getInstance().getCousinsOf("Tina"));
+        System.out.println(FamilyTree.getInstance().getFathersSiblings("Tina"));
 
-            System.out.println(FamilyTree.getInstance().getFathersSiblings("Tina"));
-
-        } catch (InvalidRelationshipException ex) {
-            System.out.println(ex.getMessage());
-        }
     }
 }
