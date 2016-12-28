@@ -6,3 +6,6 @@
 
 ###Run a test
 Right click on FamilyTreeTest.feature, click on Run Feature: FamilyTreeTest
+
+###Usage
+ 
