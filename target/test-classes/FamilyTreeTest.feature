@@ -1,25 +1,25 @@
 Feature: FamilyTreeTest
   Scenario Outline: Add a person to the family tree
-    Given I have <startAmount> people in my family tree
-    And I add a person named <name> to the family tree at level <level> who is <gender>
-    Then I have <endAmount> people in my family tree
+    Given I add a person named <name> to the family tree at level <level> who is <gender>
+    Then <name> is in my family tree
     Examples:
-      | startAmount | endAmount | name  | level | gender |
-      | 0           | 1         | Marie | 1     | female |
-      | 1           | 2         | Chris | 1     | male   |
+      | name  | level | gender |
+      | Marie | 1     | female |
+      | Chris | 1     | male   |
 
   Scenario Outline: Two people are getting married
-    Given I add a person named <person1> to the family tree at level <level> who is <female>
-    And I add a person named <person2> to the family tree at level <level> who is <male>
+    Given I add a person named <person1> to the family tree at level <level> who is <gender1>
+    And I add a person named <person2> to the family tree at level <level> who is <gender2>
     And I let <person1> and <person2> getting married
-    Then <person1> is <partner> of <person2>
+    Then <person1> is married to <person2>
     Examples:
-      | person1 | person2 | level | female | male | partner |
-      | Marie   | Chris   | 1     | female | male | wife    |
+      | person1   | person2 | level | gender1 | gender2 |
+      | Marie     | Chris   | 1     | female  | male    |
+      | Chris     | Marie    | 1     | male    | female  |
 
   Scenario Outline: Add parent to root node or to an unmarried person
     Given I add a person named <person1> to the family tree at level 1 who is <female>
-    And I add a person named <person1> to the family tree at level 0 who is <male>
+    And I add a person named <person2> to the family tree at level 0 who is <male>
     And I connect <person1> as a child to <person2>
     Then <person1> is child of <person2>
     Examples:
@@ -59,9 +59,9 @@ Feature: FamilyTreeTest
     And I connect <person2> as a child to <person1>
     And I add a person named <person3> to the family tree at level <childrenLevel> who is <male>
     And I connect <person3> as a child to <person1>
-    And I add a person named <person5> to the family tree at level <grandChildLevel> who is <male>
+    And I add a person named <person4> to the family tree at level <grandChildLevel> who is <male>
     And I connect <person4> as a child to <person2>
-    And I add a person named <person6> to the family tree at level <grandChildLevel> who is <female>
+    And I add a person named <person5> to the family tree at level <grandChildLevel> who is <female>
     And I connect <person5> as a child to <person3>
     Then <person4> is cousin of <person5>
     Examples:
