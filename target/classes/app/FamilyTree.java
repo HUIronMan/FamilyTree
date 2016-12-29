@@ -272,7 +272,7 @@ public class FamilyTree {
     boolean isCousinOf(String nameA, String nameB) {
         Person pA = getPerson(nameA);
         Person pB = getPerson(nameB);
-        return isChildOf(pA, pB);
+        return isCousinOf(pA, pB);
     }
 
     boolean isCousinOf(Person personA, Person personB) {
