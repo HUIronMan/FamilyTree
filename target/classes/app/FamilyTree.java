@@ -100,6 +100,9 @@ public class FamilyTree {
     }
 
     boolean isSpouseOf(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
         return getSpouse(personA).equals(personB);
     }
 
@@ -110,6 +113,9 @@ public class FamilyTree {
 
     Set<Person> getParentsOf(Person p) {
         HashSet<Person> parents = new HashSet<>();
+        if (p == null) {
+            return parents;
+        }
         for (Relation r : relations) {
             if (r.getPersonA().equals(p) && r.getType() == RelationType.CHILD_OF) {
                 parents.add(r.getPersonB());
@@ -125,6 +131,9 @@ public class FamilyTree {
 
     Set<Person> getChildrenOf(Person p) {
         HashSet<Person> children = new HashSet<>();
+        if (p == null) {
+            return children;
+        }
         for (Relation r : relations) {
             if (r.getPersonB().equals(p) && r.getType() == RelationType.CHILD_OF) {
                 children.add(r.getPersonA());
@@ -377,6 +386,19 @@ public class FamilyTree {
         makeChildOf(child, parent);
     }
 
+    // Going up from the parent, we must not reach the child
+    private boolean checkForCycle(Person start, Person child) {
+        Set<Person> parents = getParentsOf(start);
+        for (Person parent : parents) {
+            if (parent.equals(child)) {
+                return false;
+            } else if (!checkForCycle(parent, child)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** \brief Make a person a child of another person
      *
      * This is not allowed to introduce a cycle (ie. child mustn't be the parent of parent)
@@ -386,8 +408,8 @@ public class FamilyTree {
         if (isChildOf(child, parent))
             return; // nothing to do here
 
-        if (isChildOf(parent, child)) {
-            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, parent.getName() + " is a child of " + child.getName());
+        if (!checkForCycle(parent, child)) {
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, child.getName() + " is an ancestor of " + parent.getName());
         }
 
         if (getParentsOf(child).size() == 2) {

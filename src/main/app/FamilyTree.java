@@ -386,6 +386,19 @@ public class FamilyTree {
         makeChildOf(child, parent);
     }
 
+    // Going up from the parent, we must not reach the child
+    private boolean checkForCycle(Person start, Person child) {
+        Set<Person> parents = getParentsOf(start);
+        for (Person parent : parents) {
+            if (parent.equals(child)) {
+                return false;
+            } else if (!checkForCycle(parent, child)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** \brief Make a person a child of another person
      *
      * This is not allowed to introduce a cycle (ie. child mustn't be the parent of parent)
@@ -395,8 +408,8 @@ public class FamilyTree {
         if (isChildOf(child, parent))
             return; // nothing to do here
 
-        if (isChildOf(parent, child)) {
-            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, parent.getName() + " is a child of " + child.getName());
+        if (!checkForCycle(parent, child)) {
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, child.getName() + " is an ancestor of " + parent.getName());
         }
 
         if (getParentsOf(child).size() == 2) {
