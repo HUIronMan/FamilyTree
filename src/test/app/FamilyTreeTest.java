@@ -10,6 +10,8 @@ import org.junit.Assert;
 //import org.junit.Before;  // Does not execute Before and After
 import cucumber.api.java.Before;
 import cucumber.api.java.After;
+import java.util.Set;
+
 
 
 public class FamilyTreeTest {
@@ -69,18 +71,32 @@ public class FamilyTreeTest {
         Assert.assertTrue(FamilyTree.getInstance().isParentOf(person2, person1)); //Doppelt hält besser, oder so, aber ihr wolltet es ja in eurer Aufgabe so.
     }
 
-    @Then("^([^\"]*) is daughter of ([^\"]*)$")
-    public void a_person_is_daughter_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
-    }
+//    @Then("^([^\"]*) is daughter of ([^\"]*)$")
+//    public void a_person_is_daughter_of_another_person(String person1, String person2) throws Throwable {
+//        throw new PendingException();
+//    }
+//@Then("^([^\"]*) is son of ([^\"]*)$")
+//public void a_person_is_son_of_another_person(String person1, String person2) throws Throwable {
+////        Person person = FamilyTree.getInstance().getSpouse(person2);
+////        Assert.assertTrue(person.getName() == person1);
+//    throw new PendingException();
+//}
 
     @Then("^([^\"]*) is sibling of ([^\"]*)$")
     public void a_person_is_sibling_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+        Set<Person> parents1 = FamilyTree.getInstance().getParentsOf(person1);
+        Set<Person> parents2 = FamilyTree.getInstance().getParentsOf(person2);
+        Assert.assertTrue(parents1.equals(parents2));
+        //Children who only had one parent before marriage automatically have two parents after a marriage
     }
     @Then("^([^\"]*) is cousin of ([^\"]*)$")
     public void a_person_is_cousin_of_another_person(String person1, String person2) throws Throwable {
+        Set<Person> parents1 = FamilyTree.getInstance().getParentsOf(person1);
+        Set<Person> parents2 = FamilyTree.getInstance().getParentsOf(person2);
+       
+//        Set<Person> parentsparents1 = FamilyTree.getInstance().getParentsOf(parents1);
         throw new PendingException();
+
     }
     @Then("^([^\"]*) is aunt of ([^\"]*)$")
     public void a_person_is_aunt_of_another_person(String person1, String person2) throws Throwable {
@@ -107,12 +123,7 @@ public class FamilyTreeTest {
         throw new PendingException();
     }
 
-    @Then("^([^\"]*) is son of ([^\"]*)$")
-    public void a_person_is_son_of_another_person(String person1, String person2) throws Throwable {
-//        Person person = FamilyTree.getInstance().getSpouse(person2);
-//        Assert.assertTrue(person.getName() == person1);
-        throw new PendingException();
-    }
+
 
 //    @Then("^([^\"]*) is ([^\"]*) of ([^\"]*)$")
 //    public void a_person_has_a_relationship_to_another_person(String person1, String relation, String person2) throws Throwable {

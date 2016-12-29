@@ -32,8 +32,8 @@ Feature: FamilyTreeTest
     And I add a person named <person3> to the family tree at level <childLevel> who is <childGender>
     And I connect <person3> as a child to <person1>
     And I connect <person3> as a child to <person2>
-    Then <person3> is <child> of <person1>
-    And <person3> is <child> of <person2>
+    Then <person3> is child of <person1>
+    And <person3> is child of <person2>
     Examples:
       | person1 | person2 | male | female | person3  | level | childLevel | childGender | child    |
       | Chris   | Marie   | male | female | Isabella | 1     | 2          | female      | daughter |
