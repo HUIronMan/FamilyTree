@@ -64,33 +64,36 @@ Feature: FamilyTreeTest
     And I add a person named <person5> to the family tree at level <grandChildLevel> who is <female>
     And I connect <person5> as a child to <person3>
     Then <person4> is cousin of <person5>
+    And <person5> is cousin of <person4>
     Examples:
     | person1 | person2  | person3  | person4 | person5  | male | female | level | childrenLevel | grandChildLevel |
     | Chris   | Isabella | Michael  | Jon     | Anabelle | male | female | 1     | 2             | 3               |
 
-  Scenario Outline: A person is aunt or uncle of another person
+  Scenario Outline: A person is the parent's sibling of another person
     Given I add a person named <person1> to the family tree at level <level> who is <male>
-    And I add a person named <person2> to the family tree at level <childrenLevel> who is <female>
-    And I connect <person2> as a child to <person1>
+    And I add a person named <person2> to the family tree at level <level> who is <female>
+
     And I add a person named <person3> to the family tree at level <childrenLevel> who is <male>
     And I connect <person3> as a child to <person1>
+    And I add a person named <person4> to the family tree at level <childrenLevel> who is <female>
+    And I connect <person4> as a child to <person1>
 
-    And I add a person named <person4> to the family tree at level <childrenLevel> who is <male>
-    And I let <person2> and <person4> getting married
     And I add a person named <person5> to the family tree at level <childrenLevel> who is <female>
+    And I connect <person5> as a child to <person2>
+    And I add a person named <person6> to the family tree at level <childrenLevel> who is <female>
+    And I connect <person6> as a child to <person2>
+
     And I let <person3> and <person5> getting married
 
-    And I add a person named <person6> to the family tree at level <grandChildLevel> who is <male>
-    And I connect <person6> as a child to <person2>
-    And I connect <person6> as a child to <person4>
     And I add a person named <person7> to the family tree at level <grandChildLevel> who is <female>
     And I connect <person7> as a child to <person3>
     And I connect <person7> as a child to <person5>
-    Then <person2> is aunt of <person7>
-    And <person3> is uncle of <person6>
+
+    Then <person6> is mother's sibling of <person7>
+    And <person4> is father's sibling of <person7>
     Examples:
       | person1 | person2  | person3  | person4 | person5  | person6 | person7 | male | female | level | childrenLevel | grandChildLevel |
-      | Chris   | Isabella | Michael  | Jon     | Anabelle | Richi   | Ellen   | male | female | 1     | 2             | 3               |
+      | Chris   | Isabella | Michael  | Joane   | Anabelle | Ricarda | Ellen   | male | female | 1     | 2             | 3               |
 
   Scenario Outline: A person is grandparent of another person
     Given I add a person named <person1> to the family tree at level <level> who is <male>

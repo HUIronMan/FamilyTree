@@ -56,7 +56,6 @@ public class FamilyTreeTest {
     public void a_person_is_in_my_family_tree(String name) throws Throwable {
         Person person = FamilyTree.getInstance().getPerson(name);
         Assert.assertTrue(person.getName().equals(name));
-//        throw new PendingException();
     }
 
     @Then("^([^\"]*) is married to ([^\"]*)$")
@@ -68,19 +67,9 @@ public class FamilyTreeTest {
     @Then("^([^\"]*) is child of ([^\"]*)$")
     public void a_person_is_child_of_person(String person1, String person2) throws Throwable {
         Assert.assertTrue(FamilyTree.getInstance().isChildOf(person1, person2));
-        Assert.assertTrue(FamilyTree.getInstance().isParentOf(person2, person1)); //Doppelt hält besser, oder so, aber ihr wolltet es ja in eurer Aufgabe so.
+        Assert.assertTrue(FamilyTree.getInstance().isParentOf(person2, person1)); //Doppelt hält besser, oder so, aber ihr wolltet es ja so in eurer Aufgabe.
     }
 
-//    @Then("^([^\"]*) is daughter of ([^\"]*)$")
-//    public void a_person_is_daughter_of_another_person(String person1, String person2) throws Throwable {
-//        throw new PendingException();
-//    }
-//@Then("^([^\"]*) is son of ([^\"]*)$")
-//public void a_person_is_son_of_another_person(String person1, String person2) throws Throwable {
-////        Person person = FamilyTree.getInstance().getSpouse(person2);
-////        Assert.assertTrue(person.getName() == person1);
-//    throw new PendingException();
-//}
 
     @Then("^([^\"]*) is sibling of ([^\"]*)$")
     public void a_person_is_sibling_of_another_person(String person1, String person2) throws Throwable {
@@ -91,36 +80,38 @@ public class FamilyTreeTest {
     }
     @Then("^([^\"]*) is cousin of ([^\"]*)$")
     public void a_person_is_cousin_of_another_person(String person1, String person2) throws Throwable {
-        Set<Person> parents1 = FamilyTree.getInstance().getParentsOf(person1);
-        Set<Person> parents2 = FamilyTree.getInstance().getParentsOf(person2);
-       
-//        Set<Person> parentsparents1 = FamilyTree.getInstance().getParentsOf(parents1);
-        throw new PendingException();
-
+        Assert.assertTrue(FamilyTree.getInstance().isCousinOf(person1, person2));
+//        throw new PendingException();
     }
-    @Then("^([^\"]*) is aunt of ([^\"]*)$")
-    public void a_person_is_aunt_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+    @Then("^([^\"]*) is mother's sibling of ([^\"]*)$")
+    public void a_person_is_sibling_of_a_persons_mom(String person1, String person2) throws Throwable {
+        Assert.assertTrue(FamilyTree.getInstance().isMothersSibling(person1, person2));
+//        throw new PendingException();
+//        is mothers sibling gets all mom's siblings from PersonB(The child)
+//        it returns the sibling that contains PersonA(The sibling of mom)
+//        getMothersSiblings gets all Parents of a Person
+//        It filters the moms and collects all siblings of that parent
     }
-    @Then("^([^\"]*) is uncle of ([^\"]*)$")
-    public void a_person_is_uncle_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+    @Then("^([^\"]*) is father's sibling of ([^\"]*)$")
+    public void a_person_is_sibling_of_a_persons_dad(String person1, String person2) throws Throwable {
+        Assert.assertTrue(FamilyTree.getInstance().isFathersSibling(person1, person2));
+//        throw new PendingException();
     }
     @Then("^([^\"]*) is grandmother of ([^\"]*)$")
     public void a_person_is_grandmother_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+        Assert.assertTrue(FamilyTree.getInstance().isGrandparentOf(person1, person2));
     }
     @Then("^([^\"]*) is grandfather of ([^\"]*)$")
     public void a_person_is_grandfather_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+        Assert.assertTrue(FamilyTree.getInstance().isGrandparentOf(person1, person2));
     }
     @Then("^([^\"]*) is granddaughter of ([^\"]*)$")
     public void a_person_is_granddaugther_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+        Assert.assertTrue(FamilyTree.getInstance().isGrandchildOf(person1, person2));
     }
     @Then("^([^\"]*) is grandson of ([^\"]*)$")
     public void a_person_is_grandson_of_another_person(String person1, String person2) throws Throwable {
-        throw new PendingException();
+        Assert.assertTrue(FamilyTree.getInstance().isGrandchildOf(person1, person2));
     }
 
 

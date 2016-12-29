@@ -100,6 +100,9 @@ public class FamilyTree {
     }
 
     boolean isSpouseOf(Person personA, Person personB) {
+        if (personA == null || personB == null) {
+            return false;
+        }
         return getSpouse(personA).equals(personB);
     }
 
@@ -110,6 +113,9 @@ public class FamilyTree {
 
     Set<Person> getParentsOf(Person p) {
         HashSet<Person> parents = new HashSet<>();
+        if (p == null) {
+            return parents;
+        }
         for (Relation r : relations) {
             if (r.getPersonA().equals(p) && r.getType() == RelationType.CHILD_OF) {
                 parents.add(r.getPersonB());
@@ -125,6 +131,9 @@ public class FamilyTree {
 
     Set<Person> getChildrenOf(Person p) {
         HashSet<Person> children = new HashSet<>();
+        if (p == null) {
+            return children;
+        }
         for (Relation r : relations) {
             if (r.getPersonB().equals(p) && r.getType() == RelationType.CHILD_OF) {
                 children.add(r.getPersonA());
