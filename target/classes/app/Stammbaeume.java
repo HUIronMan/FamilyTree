@@ -1,5 +1,9 @@
 package app;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /*
  * Created by kevintrogant on 15.12.16.
  */
@@ -7,40 +11,24 @@ public class Stammbaeume {
 
     public static void main(String[] args) {
         System.out.println("Stammbäume");
+        System.out.println("Exit with \"exit\" or \"quit\"");
 
 
-        FamilyTree.getInstance().addPerson(new Person("Bob", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Eva", Gender.FEMALE));
-        FamilyTree.getInstance().addPerson(new Person("Tom", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Tim", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Timon", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Pumba", Gender.MALE));
-        FamilyTree.getInstance().addPerson(new Person("Tina", Gender.FEMALE));
-
+        UI ui = new UI();
         try {
-            FamilyTree.getInstance().marryPersons("Bob", "Eva");
-            FamilyTree.getInstance().makeChildOf("Tom", "Bob");
-            FamilyTree.getInstance().makeChildOf("Tom", "Eva");
-            FamilyTree.getInstance().makeChildOf("Tim", "Bob");
-            FamilyTree.getInstance().makeChildOf("Timon", "Tom");
-            FamilyTree.getInstance().makeChildOf("Pumba", "Tom");
-            FamilyTree.getInstance().makeChildOf("Tina", "Tim");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String in = "";
+            boolean run = true;
+            while (run) {
+                System.out.print("> ");
+                in = reader.readLine();
 
-            System.out.println("Structured tree:");
-            FamilyTree.getInstance().print();
-
-            System.out.println(FamilyTree.getInstance().isParentOf("Bob", "Tom"));
-            System.out.println(FamilyTree.getInstance().getSpouse("Bob").getName());
-
-            System.out.println(FamilyTree.getInstance().getChildrenOf("Eva"));
-            System.out.println(FamilyTree.getInstance().getGrandchildrenOf("Bob"));
-            System.out.println(FamilyTree.getInstance().getGrandparentsOf("Timon"));
-
-            System.out.println(FamilyTree.getInstance().getCousinsOf("Tina"));
-
-            System.out.println(FamilyTree.getInstance().getFathersSiblings("Tina"));
-
-        } catch (InvalidRelationshipException ex) {
+                run = !in.toUpperCase().equals("EXIT") && !in.toUpperCase().equals("QUIT");
+                if (run) {
+                    ui.parseCommand(in);
+                }
+            }
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
