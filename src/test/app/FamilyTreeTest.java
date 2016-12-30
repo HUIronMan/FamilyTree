@@ -6,8 +6,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
-//import org.junit.After;   // Does not execute Before and After
-//import org.junit.Before;  // Does not execute Before and After
 import cucumber.api.java.Before;
 import cucumber.api.java.After;
 import java.util.Set;
@@ -23,8 +21,8 @@ public class FamilyTreeTest {
 //        scenario.write("This goes into the report(s)\n");
     }
 
-    @Given("^I add a person named ([^\"]*) to the family tree at level (\\d+) who is ([^\"]*)$")
-    public void i_add_a_person_to_my_family_tree(String name, int level, String gender) throws Throwable {
+    @Given("^I add a person named ([^\"]*) to the family tree who is ([^\"]*)$")
+    public void i_add_a_person_to_my_family_tree(String name, String gender) throws Throwable {
        Gender gen = (gender.equals("female")) ? Gender.FEMALE : Gender.MALE;
        Person person = new Person(name, gen);
        FamilyTree.getInstance().addPerson(person);
@@ -38,11 +36,6 @@ public class FamilyTreeTest {
     @Given("^I let ([^\"]*) and ([^\"]*) getting married$")
     public void i_let_romeo_and_juliette_getting_married(String romeo, String juliette) throws Throwable {
         FamilyTree.getInstance().marryPersons(romeo, juliette);
-    }
-
-    @Given("^I have a root ([^\"]*) at level (\\d+)$")
-    public void i_have_an_endboss_in_my_family_tree(String rootPerson, int level) throws Throwable {
-        Assert.assertTrue(FamilyTree.getInstance().getParentsOf(rootPerson)==null);
     }
 
     @Then("^([^\"]*) is in my family tree$")
