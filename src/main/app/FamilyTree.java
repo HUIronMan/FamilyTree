@@ -403,19 +403,35 @@ public class FamilyTree {
      *
      * This is not allowed to introduce a cycle (ie. child mustn't be the parent of parent)
      * And any person can only have up to two parents
+     *
+     * If the parent is married, we also
      */
     void makeChildOf(Person child, Person parent) throws InvalidRelationshipException {
         if (isChildOf(child, parent))
             return; // nothing to do here
 
+        Person spouse = getSpouse(parent);
+
         if (!checkForCycle(parent, child)) {
-            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, child.getName() + " is an ancestor of " + parent.getName());
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF,
+                    child.getName() + " is an ancestor of " + parent.getName());
+        }
+        if (spouse != null) {
+            if (!checkForCycle(spouse, child)) {
+                throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF,
+                        child.getName() + " is an ancestor of " + spouse.getName()
+                                + ", who is the spouse of " + parent.getName());
+            }
         }
 
         if (getParentsOf(child).size() == 2) {
-            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF, child.getName() + " already has two parents");
+            throw new InvalidRelationshipException(child, parent, RelationType.CHILD_OF,
+                    child.getName() + " already has two parents");
         }
 
         relations.addLast(new Relation(child, parent, RelationType.CHILD_OF));
+
+        if (spouse != null)
+            makeChildOf(child, spouse);
     }
 }
